@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>Running Pace & Heart Rate Zone</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+        }
+
+        .card {
+            background: white;
+            width: 420px;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2a5298;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            background: #2a5298;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1e3c72;
+        }
+
+        .result {
+            margin-top: 20px;
+            background: #f4f7fb;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            margin-top: 15px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>🏃 Running Analyzer</h1>
+
+    <label>ชื่อผู้ใช้</label>
+    <input id="username" type="text">
+
+    <label>อายุ (ปี)</label>
+    <input id="age" type="number">
+
+    <label>ระยะทาง (กิโลเมตร)</label>
+    <input id="distance" type="number" step="0.01">
+
+    <label>เวลา (นาที)</label>
+    <input id="minutes" type="number">
+
+    <label>เวลา (วินาที)</label>
+    <input id="seconds" type="number">
+
+    <label>อัตราการเต้นหัวใจเฉลี่ย (bpm)</label>
+    <input id="heartRate" type="number">
+
+    <button onclick="calculate()">คำนวณผล</button>
+
+    <div class="result" id="output" style="display:none;"></div>
+
+    <div class="footer">
+        ผู้จัดทำ นายก้องเกียรติ ลาทอง 4/4 เลขที่ 22
+    </div>
+</div>
+
+<script>
+function calculate() {
+    const username = document.getElementById("username").value;
+    const age = parseInt(document.getElementById("age").value);
+    const distance = parseFloat(document.getElementById("distance").value);
+    const minutes = parseInt(document.getElementById("minutes").value);
+    const seconds = parseInt(document.getElementById("seconds").value);
+    const heartRate = parseInt(document.getElementById("heartRate").value);
+
+    const totalMinutes = minutes + (seconds / 60);
+    const pace = totalMinutes / distance;
+    const paceMin = Math.floor(pace);
+    const paceSec = Math.floor((pace - paceMin) * 60);
+
+    const maxHR = 220 - age;
+    const z1 = maxHR * 0.5;
+    const z2 = maxHR * 0.6;
+    const z3 = maxHR * 0.7;
+    const z4 = maxHR * 0.8;
+    const z5 = maxHR * 0.9;
+
+    let zone = "";
+    let advice = "";
+
+    if (heartRate < z1) {
+        zone = "ต่ำกว่า Zone 1";
+        advice = "เบาเกินไป เหมาะกับการเดินหรือฟื้นฟู";
+    } else if (heartRate < z2) {
+        zone = "Zone 1 (ฟื้นฟู)";
+        advice = "เหมาะสำหรับฟื้นฟูร่างกาย";
+    } else if (heartRate < z3) {
+        zone = "Zone 2 (วิ่งสบาย)";
+        advice = "เหมาะกับการวิ่งระยะยาวและเผาผลาญไขมัน";
+    } else if (heartRate < z4) {
+        zone = "Zone 3 (เพิ่มความฟิต)";
+        advice = "เหมาะกับการพัฒนาความอึด";
+    } else if (heartRate < z5) {
+        zone = "Zone 4 (วิ่งหนัก)";
+        advice = "เหมาะกับการซ้อมความเร็ว";
+    } else {
+        zone = "Zone 5 (หนักมาก)";
+        advice = "ใช้สำหรับแข่งหรือซ้อมสั้น ๆ เท่านั้น";
+    }
+
+    const output = document.getElementById("output");
+    output.style.display = "block";
+    output.innerHTML = `
+        <h3>สวัสดี ${username}</h3>
+        <p><strong>Pace:</strong> ${paceMin}:${paceSec.toString().padStart(2,'0')} นาที/กม.</p>
+        <p><strong>Heart Rate:</strong> ${heartRate} bpm</p>
+        <p><strong>Zone:</strong> ${zone}</p>
+        <p><strong>คำแนะนำ:</strong> ${advice}</p>
+    `;
+}
+</script>
+
+</body>
+</html>
