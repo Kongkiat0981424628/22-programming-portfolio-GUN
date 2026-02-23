@@ -11,11 +11,8 @@ print("โปรแกรมคำนวณเกรดจากคะแนน(
 print("I : score = คะแนนสอบ (0–100)")
 print("P : score >= 80 เกรด A / 70-79 เกรด B / 60-69 เกรด C  / 50-59 เกรด D / 0-50 เกรด F")
 print("o : ช่วงคะแนนที่ได้ เกรดที่ได้")
-print("ตัวแปรที่ใช้ score int / float เก็บคะแนน grade string เกรด")
-# รับค่าคะแนนจากผู้ใช้
+print("ตัวแปรที่ใช้ score int / float เก็บคะแนน grade string เกรด ")
 score = float(input("กรอกคะแนนของคุณ: "))
-
-# ตรวจสอบและคำนวณเกรด
 if score >= 80:
     grade = "A"
 elif score >= 70:
@@ -26,8 +23,6 @@ elif score >= 50:
     grade = "D"
 else:
     grade = "F"
-
-# แสดงผลลัพธ์
 print("คะแนนของคุณคือ:", score)
 print("เกรดที่ได้คือ:", grade)
-
+print("จัดทำโดย นายก้องเกียรติ ลาทอง ม.4/4 เลขที่22")
